@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+       /* binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Snackbar.make(view, "Add recipe to Recipe Book" , Snackbar.LENGTH_LONG).setAction("Add Recipe", new View.OnClickListener() {
+              Snackbar.make(view, "Add recipe to Recipe Book" , Snackbar.LENGTH_LONG).setAction("Add Recipe", new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
                        NavController navController = Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment_content_main);
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                })
                        .show();
             }
-        });
+        }); */
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each

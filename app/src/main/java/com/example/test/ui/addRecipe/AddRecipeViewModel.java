@@ -10,7 +10,7 @@ public class AddRecipeViewModel extends ViewModel {
 
     public AddRecipeViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Recipe Data:");
+        mText.setValue("Recipe Name:");
     }
 
     public LiveData<String> getText() {
