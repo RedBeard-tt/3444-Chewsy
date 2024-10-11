@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please select your activity level"
+        android:textSize="18sp"
+        android:textColor="#0047AB" />
+
+    <RadioGroup
+        android:id="@+id/activityLevelRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/sedentaryRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sedentary (no exercise)"
+            android:textColor="#0047AB" />
+
+        <RadioButton
+            android:id="@+id/lightExerciseRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light Exercise (1-2 days/week)"
+            android:textColor="#0047AB" />
+
+        <RadioButton
+            android:id="@+id/moderateExerciseRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Moderate Exercise (3-4 days/week)"
+            android:textColor="#0047AB" />
+
+        <RadioButton
+            android:id="@+id/heavyExerciseRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heavy Exercise (5-6 days/week)"
+            android:textColor="#0047AB" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/submitActivityLevelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#0D47A1" />
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your age"
+        android:textSize="18sp"
+        android:textColor="#0047AB" />
+
+
+    <EditText
+        android:id="@+id/ageEditText"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#0047AB"
+        android:hint="Enter your age"
+        android:inputType="number"
+        android:textColor="#0047AB"
+        android:textColorHint="#B3E5FC" />
+
+
+    <Button
+        android:id="@+id/submitAgeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_marginTop="24dp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0D47A1" />
+</LinearLayout>
+

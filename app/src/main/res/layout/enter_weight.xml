@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your weight"
+        android:textSize="18sp"
+        android:textColor="#0047AB" />
+
+    <EditText
+        android:id="@+id/weightEditText"
+        android:layout_width="250dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#B3E5FC"
+        android:hint="Enter your weight"
+        android:inputType="numberDecimal"
+        android:textColor="#0047AB"
+        android:textColorHint="#B3E5FC" />
+
+    <Button
+        android:id="@+id/submitWeightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#0D47A1" />
+</LinearLayout>
