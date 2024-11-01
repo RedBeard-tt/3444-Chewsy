@@ -32,8 +32,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        RecipeViewModel recipeViewModel =
-                new ViewModelProvider(this).get(RecipeViewModel.class);
+        RecipeViewModel recipeViewModel = new ViewModelProvider(requireActivity()).get(RecipeViewModel.class);
 
         // Inflate the binding for the layout
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
@@ -46,12 +45,17 @@ public class RecipeFragment extends Fragment {
         recyclerView.setAdapter(recipeAdapter);
 
         // Observe the recipe list from ViewModel
-        recipeViewModel.getRecipeBook().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
+
+        recipeViewModel.getRecipeBook().observe(getViewLifecycleOwner(), recipes -> {
+            recipeAdapter.updateRecipes(recipes); // Update the adapter's list
+        });
+
+        /*  recipeViewModel.getRecipeBook().observe(getViewLifecycleOwner(), new Observer<List<Recipe>>() {
             @Override
             public void onChanged(List<Recipe> recipes) {
                 recipeAdapter.updateRecipes(recipes); // Ensure this method exists in your adapter
             }
-        });
+        }); */
 
         // Handle Add Recipe button click
         binding.addFab.setOnClickListener(new View.OnClickListener() {
