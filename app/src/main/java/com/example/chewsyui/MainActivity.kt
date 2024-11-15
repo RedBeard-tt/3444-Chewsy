@@ -1,6 +1,10 @@
 package com.example.chewsyui
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,16 +46,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.chewsyui.ui.theme.ChewsyUITheme
-import com.example.chewsyui.ui.theme.JetpackComposeDrawerNavigationTheme
-import com.example.chewsyui.ui.theme.cobaltBlue
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.auth
 
 
 class MainActivity : ComponentActivity(){
+
+    private lateinit var button: Button
+    private lateinit var auth: FirebaseAuth;
+    private lateinit var progressBar: ProgressBar
+    private lateinit var textView: TextView
+    private lateinit var user: FirebaseUser
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+        button = findViewById(R.id.logout)
+        textView = findViewById(R.id.user_details)
+        val firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
+        firebaseUser?.let { user ->
+            // Use the non-nullable user here
+            println("User is logged in: ${user.uid}")
+        } ?: run {
+            println("User is not logged in.")
+        }
+        if (user == null){
+            var intent = Intent(applicationContext, Login::class.java)
+            startActivity(intent)
+            finish()
+
+        }
+        else{
+            textView.setText(user.getEmail());
+        }
+        button.setOnClickListener{
+            fun onClick(){
+                FirebaseAuth.getInstance().signOut()
+                var intent = Intent(applicationContext, Login::class.java)
+                startActivity(intent)
+                finish()
+
+            }
+        }
+
         setContent{
-            JetpackComposeDrawerNavigationTheme {
                 Surface (
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -61,7 +103,7 @@ class MainActivity : ComponentActivity(){
             }
         }
     }
-}
+
 
 
 

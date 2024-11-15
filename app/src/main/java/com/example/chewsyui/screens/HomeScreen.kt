@@ -40,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chewsyui.CustomAppBar
-import com.example.chewsyui.ui.theme.cobaltBlue
 
 @Composable
 fun HomeScreen(drawerState: DrawerState){
@@ -83,7 +82,7 @@ fun CalorieProgressWheel(
 
             // Draw the progress arc
             drawArc(
-                color = cobaltBlue,
+                color = Color.Blue,
                 startAngle = 270f, // Start from the top
                 sweepAngle = progress * 360f,
                 useCenter = false,
@@ -180,7 +179,7 @@ fun CalorieTrackingScreen() {
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                 ) {
                     OutlinedButton(
-                        colors = ButtonDefaults.buttonColors(cobaltBlue),
+                        colors = ButtonDefaults.buttonColors(Color.Blue),
                         onClick = { expanded = true }) {
                         Text(selectedCategory)
                     }
@@ -202,7 +201,7 @@ fun CalorieTrackingScreen() {
             }
             item {
                 Button(
-                    colors = ButtonDefaults.buttonColors(cobaltBlue),
+                    colors = ButtonDefaults.buttonColors(Color.Blue),
                     onClick = {
 
                         val calories = mealCalories.toFloatOrNull()

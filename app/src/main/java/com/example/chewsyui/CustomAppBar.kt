@@ -10,11 +10,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.chewsyui.ui.theme.JetpackComposeDrawerNavigationTheme
-import com.example.chewsyui.ui.theme.cobaltBlue
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +36,7 @@ fun CustomAppBar(drawerState: DrawerState?, title: String){
         title = { Text(text = title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = cobaltBlue
+                color = Color.Blue
             )
         })
 }
@@ -47,8 +46,6 @@ fun CustomAppBar(drawerState: DrawerState?, title: String){
 @Preview(widthDp = 300)
 @Composable
 fun PreviewCustomAppBar(){
-    JetpackComposeDrawerNavigationTheme {
         CustomAppBar(drawerState = null, title = "Title")
     }
 
-}

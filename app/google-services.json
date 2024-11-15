@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096171800503",
+    "project_id": "chewsy-bcd24",
+    "storage_bucket": "chewsy-bcd24.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096171800503:android:da64218e45439a51d14a32",
+        "android_client_info": {
+          "package_name": "com.example.chewsyui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJceQN5G9LxAoheyKsYsJmkubUf67EMiA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
