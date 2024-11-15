@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="outsideInset"
+    android:scrollbars="vertical"
+    tools:context=".ui.recipeB.RecipeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/Instructions"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="47dp"
+            android:ems="10"
+            android:hint="Enter Instructions Here"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/addToBook"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="76dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/RecipeName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/RecipeName"
+            android:layout_width="409dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="38dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Recipe Name"
+            app:layout_constraintBottom_toTopOf="@+id/ImageID"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImageID" />
+
+        <ImageView
+            android:id="@+id/ImageID"
+            android:layout_width="340dp"
+            android:layout_height="340dp"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="24dp"
+            android:src="@android:drawable/stat_sys_data_bluetooth"
+            app:layout_constraintBottom_toTopOf="@+id/ingredientsLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/RecipeName" />
+
+        <EditText
+            android:id="@+id/Ingredients"
+            android:layout_width="400dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="23dp"
+            android:ems="10"
+            android:hint="Enter Ingredients Here"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/instructionsLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ingredientsLabel" />
+
+        <TextView
+            android:id="@+id/ingredientsLabel"
+            android:layout_width="213dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="63dp"
+            android:layout_marginEnd="189dp"
+            android:text="Ingredients"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@+id/Ingredients"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ImageID" />
+
+        <TextView
+            android:id="@+id/instructionsLabel"
+            android:layout_width="213dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="189dp"
+            android:layout_marginBottom="2dp"
+            android:text="Instructions"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toTopOf="@+id/Instructions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/addToBook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="153dp"
+            android:text="Add To Book"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
