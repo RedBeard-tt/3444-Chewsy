@@ -16,24 +16,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chewsyui.CustomAppBar
+import com.example.chewsyui.screens.CalorieTrackingScreen
 import com.example.chewsyui.ui.addRecipe.Recipe
 
 
 @Composable
-fun DrawerContent(menus: Any, content: Any) {
-
-}
-
-@Composable
 fun RecipeScreen(
     recipeViewModel: RecipeViewModel,
-    onAddRecipeClick: () -> Unit
+    onAddRecipeClick: () -> Unit, drawerState: DrawerState
 ) {
-    val recipes by recipeViewModel.recipeBook.observeAsState(initial = emptyList())
+    //val recipes by recipeViewModel.recipeBook.observeAsState(initial = emptyList())
 
     Scaffold(
-        topBar = {
-            CustomAppBar(drawerState = rememberDrawerState(DrawerValue.Closed), title = "Recipe Book")
+        topBar = {CustomAppBar(drawerState = drawerState, title = "Recipe Book")
         }
     ) { paddingValues ->
         Column(
@@ -43,7 +38,7 @@ fun RecipeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
+            val recipes by recipeViewModel.recipeBook.observeAsState(initial = emptyList())
             // List of recipes
             LazyColumn(
                 modifier = Modifier

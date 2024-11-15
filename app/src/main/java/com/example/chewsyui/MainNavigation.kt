@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
@@ -64,7 +65,7 @@ private val menus = arrayOf(
     DrawerMenu(Icons.Filled.Face, "Home", MainRoute.Home.name),
     DrawerMenu(Icons.Filled.Settings, "Settings", MainRoute.Settings.name),
     DrawerMenu(Icons.Filled.Info, "About", MainRoute.About.name),
-    DrawerMenu(Icons.Filled.Info, "Recipe Book", MainRoute.RecipeScreen.name)
+    DrawerMenu(Icons.Filled.Add, "Recipe Book", MainRoute.RecipeScreen.name)
 )
 @Composable
 private fun DrawerContent(
@@ -138,7 +139,7 @@ fun MainNavigation(
                     recipeViewModel = recipeViewModel, // Pass the shared ViewModel
                     onAddRecipeClick = {
                         navController.navigate(MainRoute.AddRecipe.name)
-                    }
+                    }, drawerState
                 )
             }
             composable(MainRoute.AddRecipe.name) {
