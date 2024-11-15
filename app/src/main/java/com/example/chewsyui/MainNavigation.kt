@@ -1,5 +1,7 @@
 package com.example.chewsyui
 
+import android.R
+import android.view.LayoutInflater
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,42 +18,53 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.coroutines.CoroutineScope
 import com.example.chewsyui.screens.AboutScreen
-import com.example.chewsyui.screens.CalorieTrackingScreen
-import com.example.chewsyui.screens.HomeScreen
 import com.example.chewsyui.screens.HomeScreen
 import com.example.chewsyui.screens.SettingsScreen
+import com.example.chewsyui.ui.addRecipe.AddRecipeScreen
+import com.example.chewsyui.ui.addRecipe.AddRecipeViewModel
+import com.example.chewsyui.ui.theme.ChewsyUITheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
+import com.example.chewsyui.ui.recipeB.RecipeScreen
+import com.example.chewsyui.ui.recipeB.RecipeViewModel
 
 enum class MainRoute(value: String) {
     Home("Home"),
     About("About"),
-    Settings("Settings")
+    Settings("Settings"),
+    RecipeScreen("Recipe Book"),
+    AddRecipe("Add Recipe")
 }
 
 private data class DrawerMenu(val icon: ImageVector, val title: String, val route: String)
 private val menus = arrayOf(
     DrawerMenu(Icons.Filled.Face, "Home", MainRoute.Home.name),
     DrawerMenu(Icons.Filled.Settings, "Settings", MainRoute.Settings.name),
-    DrawerMenu(Icons.Filled.Info, "About", MainRoute.About.name)
+    DrawerMenu(Icons.Filled.Info, "About", MainRoute.About.name),
+    DrawerMenu(Icons.Filled.Info, "Recipe Book", MainRoute.RecipeScreen.name)
 )
 @Composable
 private fun DrawerContent(
@@ -93,12 +106,15 @@ fun MainNavigation(
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-){
+) {
+    // Create a shared instance of RecipeViewModel at the navigation level
+    val recipeViewModel = remember { RecipeViewModel() }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                DrawerContent(menus) {route ->
+                DrawerContent(menus) { route ->
                     coroutineScope.launch {
                         drawerState.close()
                     }
@@ -107,15 +123,32 @@ fun MainNavigation(
             }
         }
     ) {
-        NavHost(navController = navController, startDestination = MainRoute.Home.name){
-            composable(MainRoute.Home.name){
+        NavHost(navController = navController, startDestination = MainRoute.Home.name) {
+            composable(MainRoute.Home.name) {
                 HomeScreen(drawerState)
             }
-            composable(MainRoute.About.name){
+            composable(MainRoute.About.name) {
                 AboutScreen(drawerState)
             }
-            composable(MainRoute.Settings.name){
+            composable(MainRoute.Settings.name) {
                 SettingsScreen(drawerState)
+            }
+            composable(MainRoute.RecipeScreen.name) {
+                RecipeScreen(
+                    recipeViewModel = recipeViewModel, // Pass the shared ViewModel
+                    onAddRecipeClick = {
+                        navController.navigate(MainRoute.AddRecipe.name)
+                    }
+                )
+            }
+            composable(MainRoute.AddRecipe.name) {
+                AddRecipeScreen(
+                    recipeViewModel = recipeViewModel,  // Use the shared ViewModel
+                    onRecipeAdded = {
+                        navController.popBackStack(MainRoute.RecipeScreen.name, inclusive = false)
+                    },
+                    coroutineScope = coroutineScope
+                )
             }
         }
     }

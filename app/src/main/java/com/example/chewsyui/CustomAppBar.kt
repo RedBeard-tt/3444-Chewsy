@@ -13,7 +13,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.chewsyui.ui.theme.JetpackComposeDrawerNavigationTheme
 import com.example.chewsyui.ui.theme.cobaltBlue
 import kotlinx.coroutines.launch
 
@@ -40,15 +39,4 @@ fun CustomAppBar(drawerState: DrawerState?, title: String){
                 color = cobaltBlue
             )
         })
-}
-
-
-
-@Preview(widthDp = 300)
-@Composable
-fun PreviewCustomAppBar(){
-    JetpackComposeDrawerNavigationTheme {
-        CustomAppBar(drawerState = null, title = "Title")
-    }
-
 }
