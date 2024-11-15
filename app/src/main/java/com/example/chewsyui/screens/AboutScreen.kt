@@ -50,22 +50,12 @@ fun AboutScreen(drawerState: DrawerState) {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
-                text = "- Personalized Goal Setting\nEnter your health information, and we’ll guide you in setting achievable weight management goals.",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
                 text = "- Calorie Wheel\nStay on track with our intuitive Calorie Wheel, displayed prominently on the homepage. It shows the calories you've consumed each day, helping you make informed choices at a glance.",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
                 text = "- Recipe Book\nStore your favorite healthy recipes in one convenient place. Whether you’re meal-prepping or looking for inspiration, your Recipe Book will always be there for you.",
-                fontSize = 16.sp,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-            Text(
-                text = "- Progress Calendar\nTrack your journey with our Progress Calendar. See which days you’ve met your goals and celebrate your consistency.",
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
