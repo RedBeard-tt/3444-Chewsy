@@ -1,5 +1,6 @@
 package com.example.chewsyui.ui.recipeB
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -14,11 +15,12 @@ import androidx.compose.ui.unit.sp
 import com.example.chewsyui.ui.addRecipe.Recipe
 
 @Composable
-fun RecipeItem(recipe: Recipe) {
+fun RecipeItem(recipe: Recipe, onClick: (Recipe) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onClick(recipe) }, // Make the Card clickable
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {

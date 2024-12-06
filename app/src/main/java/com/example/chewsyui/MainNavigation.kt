@@ -1,7 +1,5 @@
 package com.example.chewsyui
 
-import android.R
-import android.view.LayoutInflater
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +17,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -30,13 +27,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,19 +39,20 @@ import com.example.chewsyui.screens.EnterAgeScreen
 import com.example.chewsyui.screens.HomeScreen
 import com.example.chewsyui.screens.SettingsScreen
 import com.example.chewsyui.ui.addRecipe.AddRecipeScreen
-import com.example.chewsyui.ui.addRecipe.AddRecipeViewModel
-import com.example.chewsyui.ui.theme.ChewsyUITheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import com.example.chewsyui.ui.addRecipe.Recipe
+import com.example.chewsyui.ui.editRecipe.EditRecipeScreen
 import com.example.chewsyui.ui.recipeB.RecipeScreen
 import com.example.chewsyui.ui.recipeB.RecipeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 enum class MainRoute(value: String) {
     Home("Home"),
     About("About"),
     Settings("Settings"),
     RecipeScreen("Recipe Book"),
-    AddRecipe("Add Recipe")
+    AddRecipe("Add Recipe"),
+    EditRecipeScreen("Edit Recipe")
 }
 
 private data class DrawerMenu(val icon: ImageVector, val title: String, val route: String)
@@ -140,7 +134,8 @@ fun MainNavigation(
                     recipeViewModel = recipeViewModel, // Pass the shared ViewModel
                     onAddRecipeClick = {
                         navController.navigate(MainRoute.AddRecipe.name)
-                    }, drawerState
+                    }, drawerState,
+                    navController = navController
                 )
             }
             composable(MainRoute.AddRecipe.name) {
@@ -152,6 +147,26 @@ fun MainNavigation(
                     coroutineScope = coroutineScope
                 )
             }
+            composable(MainRoute.EditRecipeScreen.name) {
+                val recipe = navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<Recipe>("recipe")
+
+                if (recipe != null) {
+                    EditRecipeScreen(
+                        recipe = recipe,
+                        recipeViewModel = recipeViewModel,
+                        onRecipeUpdated = {
+                            navController.popBackStack() // Navigate back after editing
+                        },
+                        coroutineScope = coroutineScope
+                    )
+                } else {
+                    // Handle the case where recipe is null (e.g., show an error or navigate back)
+                    Text("Error: Recipe not found")
+                }
+            }
         }
     }
 }
+

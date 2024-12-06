@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -44,6 +45,7 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.test.android)
+    implementation(libs.androidx.room.ktx)
     val nav_version = "2.8.3"
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
