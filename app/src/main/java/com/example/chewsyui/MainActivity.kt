@@ -1,5 +1,6 @@
 package com.example.chewsyui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.chewsyui.screens.EnterAgeScreen
 import com.example.chewsyui.ui.theme.ChewsyUITheme
 import com.example.chewsyui.ui.theme.JetpackComposeDrawerNavigationTheme
 import com.example.chewsyui.ui.theme.cobaltBlue
@@ -50,6 +52,7 @@ import com.example.chewsyui.ui.theme.cobaltBlue
 class MainActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
         setContent{
             JetpackComposeDrawerNavigationTheme {
                 Surface (
@@ -60,5 +63,6 @@ class MainActivity : ComponentActivity(){
                 }
             }
         }
+
     }
 }
