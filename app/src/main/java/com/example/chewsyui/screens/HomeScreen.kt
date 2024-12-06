@@ -1,21 +1,21 @@
 package com.example.chewsyui.screens
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -24,8 +24,6 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,16 +35,48 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.chewsyui.CustomAppBar
 import com.example.chewsyui.ui.theme.cobaltBlue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
+
+class SharedPreferencesManager(context: Context){
+    private val preferences: SharedPreferences = context.getSharedPreferences("ChewsyPreferences", Context.MODE_PRIVATE)
+
+    //Save a list of meals
+    fun saveMealList(key: String, mealList: List<Pair<String, Float>>){
+        val json = Gson().toJson(mealList)
+        preferences.edit().putString(key, json).apply()
+    }
+
+    // Retrieve a list of meals
+    fun getMealList(key: String): List<Pair<String, Float>>{
+        val json = preferences.getString(key, null)
+        val type = object : TypeToken<List<Pair<String, Float>>>() {}.type
+        return Gson().fromJson(json, type) ?: emptyList()
+    }
+
+    //Save total calorie count
+    fun saveCalorieCount(calorieCount: Float){
+        preferences.edit().putFloat("calorieCount", calorieCount).apply()
+    }
+
+    //Retrieve total calorie count
+    fun getCalorieCount(): Float {
+        return preferences.getFloat("calorieCount", 0f)
+    }
+}
+
 
 
 @Composable
@@ -138,117 +168,149 @@ fun MealItem(mealName: String, mealCalories: Float) {
 
 @Composable
 fun CalorieTrackingScreen() {
-    var calorieCount by remember { mutableStateOf(0f) } // Default calorie count
-    val maxCalories = 2300f // Maximum calories for the wheel
-    val progress = calorieCount / maxCalories
+    // Initialize SharedPreferencesManager
+    val context = LocalContext.current
+    val sharedPreferencesManager = remember { SharedPreferencesManager(context) }
+
+    // State variables
+    var calorieCount by remember { mutableStateOf(sharedPreferencesManager.getCalorieCount()) }
+    val maxCalories = 2300f
     var mealName by remember { mutableStateOf("") }
     var mealCalories by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Select Meal") }
+    var showError by remember { mutableStateOf(false) }
 
-    val breakFastList = remember { mutableStateListOf<Pair<String, Float>>() }
-    val lunchList = remember { mutableStateListOf<Pair<String, Float>>() }
-    val dinnerList = remember { mutableStateListOf<Pair<String, Float>>() }
-    val snacksList = remember { mutableStateListOf<Pair<String, Float>>() }
+    // Load meal lists from SharedPreferences
+    val breakFastList = remember { mutableStateListOf<Pair<String, Float>>().apply { addAll(sharedPreferencesManager.getMealList("breakfast")) } }
+    val lunchList = remember { mutableStateListOf<Pair<String, Float>>().apply { addAll(sharedPreferencesManager.getMealList("lunch")) } }
+    val dinnerList = remember { mutableStateListOf<Pair<String, Float>>().apply { addAll(sharedPreferencesManager.getMealList("dinner")) } }
+    val snacksList = remember { mutableStateListOf<Pair<String, Float>>().apply { addAll(sharedPreferencesManager.getMealList("snacks")) } }
 
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            // Circular Progress Wheel for Calories
-            item {
-                CalorieProgressWheel(
-                    calorieCount = calorieCount,
-                    maxCalories = maxCalories
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = mealName,
-                    onValueChange = { mealName = it },
-                    label = { Text("Food") },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-                )
-            }
-            item {
-                OutlinedTextField(
-                    value = mealCalories,
-                    onValueChange = { mealCalories = it },
-                    label = { Text("Calories") },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
-                )
-            }
-            item {
-                var expanded by remember { mutableStateOf(false) }
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)
-                ) {
-                    TextButton(
-                        onClick = { expanded = !expanded },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(cobaltBlue)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = selectedCategory)
-                            Icon(
-                                imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                                contentDescription = null
-                            )
-                        }
-                    }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        listOf("Breakfast", "Lunch", "Dinner", "Snacks").forEach { category ->
-                            DropdownMenuItem(
-                                text = { Text(category) },
-                                onClick = {
-                                    selectedCategory = category
-                                    expanded = false
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            item {
-                Button(
-                    colors = ButtonDefaults.buttonColors(cobaltBlue),
-                    onClick = {
-
-                        val calories = mealCalories.toFloatOrNull()
-                        if (mealName.isNotEmpty() && calories != null) {
-                            when (selectedCategory) {
-                                "Breakfast" -> breakFastList.add(mealName to calories)
-                                "Lunch" -> lunchList.add(mealName to calories)
-                                "Dinner" -> dinnerList.add(mealName to calories)
-                                "Snacks" -> snacksList.add(mealName to calories)
-                            }
-                            calorieCount += calories
-                            mealName = ""
-                            mealCalories = ""
-                        }
-                    },
-                    modifier = Modifier.padding(vertical = 8.dp)
-                ) {
-                    Text("Add Meal")
-                }
-            }
-            // List of Meals
-            item { CategorySection("Breakfast", breakFastList) }
-            item { CategorySection("Lunch", lunchList) }
-            item { CategorySection("Dinner", dinnerList) }
-            item { CategorySection("Snacks", snacksList) }
-        }
+    // Save data to SharedPreferences when the state changes
+    LaunchedEffect(calorieCount) {
+        sharedPreferencesManager.saveCalorieCount(calorieCount)
     }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        // Circular Progress Wheel
+        item {
+            CalorieProgressWheel(calorieCount = calorieCount, maxCalories = maxCalories)
+        }
+
+        // Input Fields
+        item {
+            OutlinedTextField(
+                value = mealName,
+                onValueChange = { mealName = it },
+                label = { Text("Food") },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            )
+        }
+
+        item {
+            OutlinedTextField(
+                value = mealCalories,
+                onValueChange = { mealCalories = it },
+                label = { Text("Calories") },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
+            )
+            if (showError) {
+                Text(
+                    text = "Invalid calorie value.",
+                    color = Color.Red,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+
+        // Dropdown Menu for Category
+        item {
+            var expanded by remember { mutableStateOf(false) }
+            Box(modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+                TextButton(
+                    onClick = { expanded = !expanded },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = selectedCategory)
+                        Icon(
+                            imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = null
+                        )
+                    }
+                }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    listOf("Breakfast", "Lunch", "Dinner", "Snacks").forEach { category ->
+                        DropdownMenuItem(
+                            text = { Text(category) },
+                            onClick = {
+                                selectedCategory = category
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
+
+        // Add Meal Button
+        item {
+            Button(
+                onClick = {
+                    val calories = mealCalories.toFloatOrNull()
+                    if (mealName.isNotEmpty() && calories != null) {
+                        when (selectedCategory) {
+                            "Breakfast" -> {
+                                breakFastList.add(mealName to calories)
+                                sharedPreferencesManager.saveMealList("breakfast", breakFastList)
+                            }
+                            "Lunch" -> {
+                                lunchList.add(mealName to calories)
+                                sharedPreferencesManager.saveMealList("lunch", lunchList)
+                            }
+                            "Dinner" -> {
+                                dinnerList.add(mealName to calories)
+                                sharedPreferencesManager.saveMealList("dinner", dinnerList)
+                            }
+                            "Snacks" -> {
+                                snacksList.add(mealName to calories)
+                                sharedPreferencesManager.saveMealList("snacks", snacksList)
+                            }
+                        }
+                        calorieCount += calories
+                        mealName = ""
+                        mealCalories = ""
+                        showError = false
+                    } else {
+                        showError = true
+                    }
+                },
+                modifier = Modifier.padding(vertical = 8.dp)
+            ) {
+                Text("Add Meal")
+            }
+        }
+
+        // Meal Categories
+        item { CategorySection("Breakfast", breakFastList) }
+        item { CategorySection("Lunch", lunchList) }
+        item { CategorySection("Dinner", dinnerList) }
+        item { CategorySection("Snacks", snacksList) }
+    }
+}
 
 
 

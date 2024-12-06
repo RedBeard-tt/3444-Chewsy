@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.code.gson:gson:2.10.1")
     implementation(libs.core.ktx)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.ui.test.android)
